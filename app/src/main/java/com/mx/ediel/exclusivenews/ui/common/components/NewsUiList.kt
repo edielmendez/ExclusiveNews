@@ -2,6 +2,7 @@ package com.mx.ediel.exclusivenews.ui.common.components
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -74,6 +75,9 @@ fun NewItemRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable {
+                    onItemClick(item)
+                }
         ){
             Column(
                 modifier = Modifier.weight(0.6F).padding(vertical = 8.dp, horizontal = 16.dp)

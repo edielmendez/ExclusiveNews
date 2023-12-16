@@ -4,8 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.mx.ediel.exclusivenews.ui.screens.home.HomeScreen
-import com.mx.ediel.exclusivenews.ui.screens.home.navigation.homeNavigationRoute
+import com.mx.ediel.exclusivenews.ui.screens.favorites.FavoritesScreen
 
 
 const val favoritesNavigationRoute = "favorites_route"

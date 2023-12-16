@@ -21,7 +21,8 @@ fun NavGraphBuilder.homeScreen(
         route = homeNavigationRoute,
     ) {
         HomeScreen(
-            onFavoritesButtonClick = onFavoritesButtonClick
+            onFavoritesButtonClick = onFavoritesButtonClick,
+            onNewItemClick = onNewItemClick
         )
     }
 }

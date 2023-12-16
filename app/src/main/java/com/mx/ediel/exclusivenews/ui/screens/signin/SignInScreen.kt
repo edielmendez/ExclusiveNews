@@ -24,7 +24,9 @@ import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen(){
+fun SignInScreen(
+    onSignInButtonClick: () -> Unit
+){
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -58,7 +60,7 @@ fun SignInScreen(){
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = onSignInButtonClick) {
             Text(text = "Sign In")
         }
     }
@@ -68,6 +70,6 @@ fun SignInScreen(){
 @Composable
 fun SignInScreenPreview(){
     ExclusiveNewsTheme{
-        SignInScreen()
+        SignInScreen({})
     }
 }

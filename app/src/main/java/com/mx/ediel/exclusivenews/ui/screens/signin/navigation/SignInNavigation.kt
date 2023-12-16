@@ -8,14 +8,14 @@ import com.mx.ediel.exclusivenews.ui.screens.signin.SignInScreen
 
 const val signInNavigationRoute = "sign_in_route"
 
-fun NavController.navigateSignIn(navOptions: NavOptions? = null) {
+fun NavController.navigateToSignIn(navOptions: NavOptions? = null) {
     this.navigate(signInNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.signInScreen(onSignInButtonClick: (String) -> Unit) {
+fun NavGraphBuilder.signInScreen(onSignInButtonClick: () -> Unit) {
     composable(
         route = signInNavigationRoute,
     ) {
-        SignInScreen()
+        SignInScreen(onSignInButtonClick)
     }
 }

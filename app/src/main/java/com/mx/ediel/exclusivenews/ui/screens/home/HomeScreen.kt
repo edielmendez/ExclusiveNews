@@ -1,4 +1,4 @@
-package com.mx.ediel.exclusivenews.ui.home
+package com.mx.ediel.exclusivenews.ui.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,18 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
-import com.mx.ediel.exclusivenews.ui.home.components.CustomSearchView
+import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
 import com.mx.ediel.exclusivenews.ui.model.FakeNews
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(){
+fun HomeScreen(
+    onFavoritesButtonClick: () -> Unit
+){
     //val scaffoldState = rememberScaffoldState()
     Scaffold(
         topBar = {
             DefaultTopAppBar(
                 title = "Exclusive News",
-                rightIcon = Icons.Default.Home
+                rightIcon = Icons.Default.Home,
+                onRightIconClick = onFavoritesButtonClick
             )
         }
     ) {

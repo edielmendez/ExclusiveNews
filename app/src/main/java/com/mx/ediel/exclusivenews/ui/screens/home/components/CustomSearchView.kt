@@ -1,4 +1,4 @@
-package com.mx.ediel.exclusivenews.ui.home.components
+package com.mx.ediel.exclusivenews.ui.screens.home.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField

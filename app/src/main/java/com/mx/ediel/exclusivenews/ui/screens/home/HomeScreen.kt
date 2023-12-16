@@ -10,11 +10,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
 import com.mx.ediel.exclusivenews.ui.model.FakeNews
+import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +37,8 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it).padding(horizontal = 16.dp)
+                .padding(it)
+                .padding(horizontal = 16.dp)
         ) {
             CustomSearchView(
                 modifier = Modifier
@@ -49,5 +52,16 @@ fun HomeScreen(
                 }
             )
         }
+    }
+}
+
+@Composable
+@Preview
+fun HomeScreenPreview(){
+    ExclusiveNewsTheme {
+        HomeScreen(
+            onFavoritesButtonClick = {},
+            onNewItemClick = {}
+        )
     }
 }

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -65,8 +67,14 @@ dependencies {
     ///Navigation
     implementation("androidx.navigation:navigation-compose:$nav_version")
     //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:3.4.1")
     //Room
     //Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
     //Glide
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.3")
     testImplementation("junit:junit:4.13.2")

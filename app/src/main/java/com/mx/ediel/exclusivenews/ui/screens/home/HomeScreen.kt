@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
@@ -22,14 +25,18 @@ import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 @Composable
 fun HomeScreen(
     onFavoritesButtonClick: () -> Unit,
-    onNewItemClick: (String) -> Unit
+    onNewItemClick: (String) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ){
     //val scaffoldState = rememberScaffoldState()
+    LaunchedEffect(Unit){
+        viewModel.onEvent(HomeEvent.FetchNews)
+    }
     Scaffold(
         topBar = {
             DefaultTopAppBar(
                 title = "Exclusive News",
-                rightIcon = Icons.Default.Home,
+                rightIcon = Icons.Filled.Favorite,
                 onRightIconClick = onFavoritesButtonClick
             )
         }

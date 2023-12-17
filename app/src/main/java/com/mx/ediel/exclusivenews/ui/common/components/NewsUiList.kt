@@ -1,46 +1,35 @@
 package com.mx.ediel.exclusivenews.ui.common.components
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.mx.ediel.exclusivenews.R
-import com.mx.ediel.exclusivenews.ui.model.New
+import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.theme.BasePadding
 import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 
 @Composable
 fun NewsUiList(
     modifier: Modifier = Modifier,
-    news: List<New>,
-    onItemClick: (New) -> Unit
+    news: List<News>,
+    onItemClick: (News) -> Unit
 ){
     LazyColumn(
         contentPadding = PaddingValues(
@@ -60,8 +49,8 @@ fun NewsUiList(
 @Composable
 fun NewItemRow(
     modifier: Modifier = Modifier,
-    item: New,
-    onItemClick: (New) -> Unit
+    item: News,
+    onItemClick: (News) -> Unit
 ){
     Spacer(modifier = Modifier.height(24.dp))
     Card(
@@ -118,7 +107,7 @@ fun NewItemRowPreview(){
     ExclusiveNewsTheme {
         NewItemRow(
             onItemClick = {},
-            item = New(
+            item = News(
                 id = "",
                 author = "Richard Lai",
                 title = "Apple now needs a judge's order to hand over push notification records",

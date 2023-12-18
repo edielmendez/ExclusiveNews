@@ -2,6 +2,8 @@ package com.mx.ediel.exclusivenews.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.mx.ediel.exclusivenews.data.local.repositories.NewsLocalRepository
+import com.mx.ediel.exclusivenews.data.local.repositories.NewsLocalRepositoryImpl
 import com.mx.ediel.exclusivenews.data.remote.common.RemoteServiceConstants.BASE_URL
 import com.mx.ediel.exclusivenews.data.remote.news.NewsRepository
 import com.mx.ediel.exclusivenews.data.remote.news.NewsRepositoryImpl
@@ -55,6 +57,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNewsRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository = newsRepositoryImpl
+
+    @Provides
+    @Singleton
+    fun provideNewsLocalRepository(newsLocalRepositoryImpl: NewsLocalRepositoryImpl): NewsLocalRepository = newsLocalRepositoryImpl
 
     @Provides
     @DefaultDispatcher

@@ -149,7 +149,7 @@ fun NewItemRowPreview(){
         NewItemRow(
             onItemClick = {},
             item = News(
-                id = "",
+                id = 0,
                 author = "Richard Lai",
                 title = "Apple now needs a judge's order to hand over push notification records",
                 createdAt = "2023-12-14T12:55:48Z",

@@ -13,11 +13,11 @@ fun NavController.navigateToFavorites(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.favoritesScreen(
-    onRightIconClick: () -> Unit
+    onLeftIconClick: () -> Unit
 ) {
     composable(
         route = favoritesNavigationRoute,
     ) {
-        FavoritesScreen(onRightIconClick)
+        FavoritesScreen(onLeftIconClick)
     }
 }

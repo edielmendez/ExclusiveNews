@@ -18,7 +18,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
-import com.mx.ediel.exclusivenews.ui.model.FakeNews
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable

@@ -15,7 +15,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeScreen(
     onFavoritesButtonClick: () -> Unit,
-    onNewItemClick: (String) -> Unit,
+    onNewItemClick: (Int) -> Unit,
 ) {
     composable(
         route = homeNavigationRoute,

@@ -24,14 +24,13 @@ import com.mx.ediel.exclusivenews.ui.common.components.CustomLoader
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
-import com.mx.ediel.exclusivenews.ui.model.FakeNews
 import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onFavoritesButtonClick: () -> Unit,
-    onNewItemClick: (String) -> Unit,
+    onNewItemClick: (Int) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsState()

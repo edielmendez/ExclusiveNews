@@ -1,5 +1,6 @@
 package com.mx.ediel.exclusivenews.data.remote.news
 
+import com.mx.ediel.exclusivenews.data.local.dao.NewsDAO
 import com.mx.ediel.exclusivenews.data.remote.common.NetworkResult
 import com.mx.ediel.exclusivenews.data.remote.service.AppService
 import com.mx.ediel.exclusivenews.di.DefaultDispatcher
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +18,10 @@ import javax.inject.Singleton
 class NewsRepositoryImpl @Inject constructor (
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
     private val service: AppService,
+    private val dao: NewsDAO
 ): NewsRepository {
+
+    val localNews = dao.getNews().map { it.map { list -> list.toNewsModel() } }
     override fun fetchNews(page: Int): Flow<NetworkResult<List<News>>> = flow {
         try {
             val response = service.getNews(

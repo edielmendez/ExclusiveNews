@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mx.ediel.exclusivenews.ui.screens.detail.navigation.detailScreen
 import com.mx.ediel.exclusivenews.ui.screens.detail.navigation.navigateToDetail
+import com.mx.ediel.exclusivenews.ui.screens.favorites.navigation.favoritesNavigationRoute
 import com.mx.ediel.exclusivenews.ui.screens.favorites.navigation.favoritesScreen
 import com.mx.ediel.exclusivenews.ui.screens.favorites.navigation.navigateToFavorites
 import com.mx.ediel.exclusivenews.ui.screens.home.navigation.homeNavigationRoute
@@ -33,7 +34,7 @@ fun ExclusiveNewsNavHost(
             }
         )
         favoritesScreen(
-            onRightIconClick = {}
+            onLeftIconClick = navController::popBackStack
         )
         detailScreen(
             onRightIconClick = navController::popBackStack

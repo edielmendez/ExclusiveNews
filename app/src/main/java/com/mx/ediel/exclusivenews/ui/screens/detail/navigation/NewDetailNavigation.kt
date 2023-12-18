@@ -15,7 +15,7 @@ const val NEWS_IMAGE = "newsImage"
 
 
 const val newDetailNavigationRoute = "new_detail_route"
-fun NavController.navigateToDetail(id: String, navOptions: NavOptions? = null) {
+fun NavController.navigateToDetail(id: Int, navOptions: NavOptions? = null) {
     //Log.v("NavController", "image -> $image - $newDetailNavigationRoute/$image")
     this.navigate("$newDetailNavigationRoute/$id", navOptions)
 }

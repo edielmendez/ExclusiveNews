@@ -14,7 +14,7 @@ data class NewsDto(
     @SerializedName("content"     ) var content     : String? = null
 ){
     fun toNews() = News(
-        id = "",
+        id = 0,
         title = title ?: "",
         author = author ?: "",
         description = description ?: "",

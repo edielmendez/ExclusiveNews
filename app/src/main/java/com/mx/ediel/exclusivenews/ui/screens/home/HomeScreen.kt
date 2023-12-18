@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mx.ediel.exclusivenews.ui.common.components.CustomLoader
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
+import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
 import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 
@@ -30,7 +31,7 @@ import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 @Composable
 fun HomeScreen(
     onFavoritesButtonClick: () -> Unit,
-    onNewItemClick: (Int) -> Unit,
+    onNewItemClick: (News) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsState()
@@ -82,7 +83,7 @@ fun HomeScreen(
                 NewsUiList(
                     news = uiState.newsList,
                     onItemClick = { news ->
-                        onNewItemClick(news.id)
+                        onNewItemClick(news)
                     }
                 )
             }

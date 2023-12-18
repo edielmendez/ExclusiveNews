@@ -34,7 +34,10 @@ fun ExclusiveNewsNavHost(
             }
         )
         favoritesScreen(
-            onLeftIconClick = navController::popBackStack
+            onLeftIconClick = navController::popBackStack,
+            onNewItemClick = {
+                //navController.navigateToDetail(it)
+            }
         )
         detailScreen(
             onRightIconClick = navController::popBackStack

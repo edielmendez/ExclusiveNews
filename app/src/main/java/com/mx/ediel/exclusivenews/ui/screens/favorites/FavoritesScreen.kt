@@ -25,6 +25,7 @@ import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
 @Composable
 fun FavoritesScreen(
     onLeftIconClick: () -> Unit,
+    onNewItemClick: (Int) -> Unit,
     viewModel: FavoritesViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsState()
@@ -47,7 +48,9 @@ fun FavoritesScreen(
             if(uiState.newsList.isNotEmpty()){
                 NewsUiList(
                     news = uiState.newsList,
-                    onItemClick = {}
+                    onItemClick = {
+                        onNewItemClick(it.id)
+                    }
                 )
             }else{
                 EmptyResults()

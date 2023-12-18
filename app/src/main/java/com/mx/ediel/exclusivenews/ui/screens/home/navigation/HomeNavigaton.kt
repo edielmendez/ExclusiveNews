@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.screens.home.HomeScreen
 import com.mx.ediel.exclusivenews.ui.screens.signin.SignInScreen
 
@@ -15,7 +16,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeScreen(
     onFavoritesButtonClick: () -> Unit,
-    onNewItemClick: (Int) -> Unit,
+    onNewItemClick: (News) -> Unit
 ) {
     composable(
         route = homeNavigationRoute,

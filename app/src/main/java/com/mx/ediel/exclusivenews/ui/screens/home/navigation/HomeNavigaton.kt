@@ -7,11 +7,16 @@ import androidx.navigation.compose.composable
 import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.screens.home.HomeScreen
 import com.mx.ediel.exclusivenews.ui.screens.signin.SignInScreen
+import com.mx.ediel.exclusivenews.ui.screens.signin.navigation.signInNavigationRoute
 
 const val homeNavigationRoute = "home_route"
 
 fun NavController.navigateToHome(navOptions: NavOptions? = null) {
-    this.navigate(homeNavigationRoute, navOptions)
+    this.navigate(homeNavigationRoute){
+        popUpTo(signInNavigationRoute){
+            inclusive = true
+        }
+    }
 }
 
 fun NavGraphBuilder.homeScreen(

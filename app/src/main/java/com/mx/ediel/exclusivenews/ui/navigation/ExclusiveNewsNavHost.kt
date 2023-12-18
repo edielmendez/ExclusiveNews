@@ -16,7 +16,7 @@ import com.mx.ediel.exclusivenews.ui.screens.signin.navigation.signInScreen
 
 @Composable
 fun ExclusiveNewsNavHost(
-    startDestination: String = homeNavigationRoute
+    startDestination: String = signInNavigationRoute
 ){
     val navController = rememberNavController()
 

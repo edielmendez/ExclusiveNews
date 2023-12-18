@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mx.ediel.exclusivenews.ui.common.components.CustomLoader
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
+import com.mx.ediel.exclusivenews.ui.common.components.EmptyResults
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
@@ -80,12 +81,18 @@ fun HomeScreen(
                     placeHolder = "Buscar",
 
                 )
-                NewsUiList(
-                    news = uiState.newsList,
-                    onItemClick = { news ->
-                        onNewItemClick(news)
-                    }
-                )
+                if(uiState.newsList.isNotEmpty()){
+                    NewsUiList(
+                        news = uiState.newsList,
+                        onItemClick = { news ->
+                            onNewItemClick(news)
+                        }
+                    )
+                }else{
+                    EmptyResults(
+                        message = "RESULTADOS NO ENCONTRADOS"
+                    )
+                }
             }
         }
     }

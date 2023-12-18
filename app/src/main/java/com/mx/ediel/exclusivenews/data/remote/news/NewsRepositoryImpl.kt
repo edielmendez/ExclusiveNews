@@ -22,10 +22,10 @@ class NewsRepositoryImpl @Inject constructor (
 ): NewsRepository {
 
     val localNews = dao.getNews().map { it.map { list -> list.toNewsModel() } }
-    override fun fetchNews(page: Int): Flow<NetworkResult<List<News>>> = flow {
+    override fun fetchNews(query: String): Flow<NetworkResult<List<News>>> = flow {
         try {
             val response = service.getNews(
-                page = page
+                query = query
             )
             if(response.isSuccessful){
                 emit(NetworkResult.Success(response.body()?.articles?.map { it.toNews() } ?: emptyList()))

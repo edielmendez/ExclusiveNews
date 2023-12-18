@@ -12,7 +12,8 @@ import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun EmptyResults(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    message: String = "SIN RESULTADOS"
 ){
     Box(
         modifier = modifier.fillMaxSize(),
@@ -20,7 +21,7 @@ fun EmptyResults(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "SIN RESULTADOS",
+            text = message,
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.secondary

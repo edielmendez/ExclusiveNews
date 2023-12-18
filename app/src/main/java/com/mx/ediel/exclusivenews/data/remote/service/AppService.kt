@@ -9,7 +9,6 @@ import retrofit2.http.Query
 interface AppService {
     @GET("everything")
     suspend fun getNews(
-        @Query("page") page: Int,
         @Query("q") query: String = "flutter",
         @Query("language") language: String = "es",
         @Query("apiKey") ApiKey: String = RemoteServiceConstants.API_KEY

@@ -1,16 +1,25 @@
 package com.mx.ediel.exclusivenews.ui.screens.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.ediel.exclusivenews.data.remote.common.NetworkResult
 import com.mx.ediel.exclusivenews.data.remote.news.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -61,7 +70,7 @@ class HomeViewModel @Inject constructor(
         job?.cancel()
         setLoading()
         job = viewModelScope.launch(context = Dispatchers.IO) {
-            repository.fetchNews(uiState.value.page)
+            repository.fetchNews("flutter")
                 .catch {  }
                 .collectLatest { result ->
                     when (result) {
@@ -83,16 +92,46 @@ class HomeViewModel @Inject constructor(
 
     }
 
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private fun searchWord(word: String){
-        val filteredList = uiState.value.newsList.filter { movie ->
+        /*val filteredList = uiState.value.newsList.filter { movie ->
             movie.title.contains(word, true) || movie.description.contains(word, true) || movie.author.contains(word, true)
         }
         vmUiState.update {
             it.copy(newsList = filteredList)
+        }*/
+        job?.cancel()
+        job = viewModelScope.launch {
+            flowOf(word)
+                .debounce(500)
+                .filter { query ->
+                    return@filter query.length > 3
+                }
+                .distinctUntilChanged()
+                .flatMapLatest {
+                    Log.v("HomeViewModel", "Searching ... $it")
+                    repository.fetchNews(it)
+                }
+                .catch {  }
+                .collectLatest { result ->
+                    when (result) {
+                        is NetworkResult.Success -> {
+                            vmUiState.update { state ->
+                                state.copy(isLoading = false, newsList = result.data)
+                            }
+                        }
+                        is NetworkResult.Error -> {
+                            vmUiState.update { state ->
+                                state.copy(isLoading = false, error = result.error)
+                            }
+                        }
+                    }
+                }
         }
     }
 
     private fun resetNewsList(){
+        job?.cancel()
         vmUiState.update {
             it.copy(newsList = it.newsListBackup)
         }

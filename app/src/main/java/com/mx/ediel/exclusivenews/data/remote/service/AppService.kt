@@ -11,6 +11,7 @@ interface AppService {
     suspend fun getNews(
         @Query("page") page: Int,
         @Query("q") query: String = "flutter",
-        @Query("api_key") ApiKey: String = RemoteServiceConstants.API_KEY
+        @Query("language") language: String = "es",
+        @Query("apiKey") ApiKey: String = RemoteServiceConstants.API_KEY
     ): Response<EverythingNewsResponse>
 }

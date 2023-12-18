@@ -33,19 +33,33 @@ class HomeViewModel @Inject constructor(
 
     private var job: Job? = null
 
+    init {
+        resetPagination()
+    }
+
+    private fun resetPagination(){
+        vmUiState.update {
+            it.copy(page = 1)
+        }
+    }
+
     fun onEvent(event: HomeEvent){
         when(event){
             is HomeEvent.FetchNews -> {
                 fetchNews()
             }
             is HomeEvent.Search -> {
-
+                searchWord(event.word)
+            }
+            is HomeEvent.ResetList -> {
+                resetNewsList()
             }
         }
     }
 
     private fun fetchNews() {
         job?.cancel()
+        setLoading()
         job = viewModelScope.launch(context = Dispatchers.IO) {
             repository.fetchNews(uiState.value.page)
                 .catch {  }
@@ -55,7 +69,7 @@ class HomeViewModel @Inject constructor(
                             vmUiState.update { state ->
                                 val newList = state.newsList.toMutableList()
                                 newList.addAll(result.data)
-                                state.copy(isLoading = false, newsList = newList)
+                                state.copy(isLoading = false, newsList = newList,  newsListBackup = newList)
                             }
                         }
                         is NetworkResult.Error -> {
@@ -67,5 +81,31 @@ class HomeViewModel @Inject constructor(
                 }
         }
 
+    }
+
+    private fun searchWord(word: String){
+        val filteredList = uiState.value.newsList.filter { movie ->
+            movie.title.contains(word, true) || movie.description.contains(word, true) || movie.author.contains(word, true)
+        }
+        vmUiState.update {
+            it.copy(newsList = filteredList)
+        }
+    }
+
+    private fun resetNewsList(){
+        vmUiState.update {
+            it.copy(newsList = it.newsListBackup)
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean = true){
+        vmUiState.update {
+            it.copy(isLoading = isLoading)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
     }
 }

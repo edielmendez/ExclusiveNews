@@ -6,5 +6,6 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val error: String = "",
     val newsList: List<News> = emptyList(),
+    val newsListBackup: List<News> = emptyList(),
     val page: Int = 1
 )

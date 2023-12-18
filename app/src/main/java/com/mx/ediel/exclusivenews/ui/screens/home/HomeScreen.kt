@@ -11,10 +11,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mx.ediel.exclusivenews.ui.common.components.CustomLoader
 import com.mx.ediel.exclusivenews.ui.common.components.DefaultTopAppBar
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
@@ -28,7 +34,11 @@ fun HomeScreen(
     onNewItemClick: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ){
-    //val scaffoldState = rememberScaffoldState()
+    val uiState by viewModel.uiState.collectAsState()
+    var searchedText by remember {
+        mutableStateOf("")
+    }
+
     LaunchedEffect(Unit){
         viewModel.onEvent(HomeEvent.FetchNews)
     }
@@ -45,19 +55,38 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(horizontal = 16.dp)
         ) {
-            CustomSearchView(
+            if(uiState.isLoading){
+                CustomLoader()
+            }
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 24.dp)
-            )
-            NewsUiList(
-                news = FakeNews.news,
-                onItemClick = { news ->
-                    onNewItemClick(news.id)
-                }
-            )
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+            ) {
+                CustomSearchView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 24.dp, top = 16.dp),
+                    searchedText = searchedText,
+                    onValueChange = {
+                        searchedText = it
+                        if(it.isNotEmpty()){
+                            viewModel.onEvent(HomeEvent.Search(it))
+                        }else{
+                            viewModel.onEvent(HomeEvent.ResetList)
+                        }
+                    },
+                    placeHolder = "Buscar",
+
+                )
+                NewsUiList(
+                    news = uiState.newsList,
+                    onItemClick = { news ->
+                        onNewItemClick(news.id)
+                    }
+                )
+            }
         }
     }
 }

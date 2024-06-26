@@ -1,5 +1,6 @@
 package com.mx.ediel.exclusivenews.ui.screens.home
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,8 +16,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +30,8 @@ import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
 import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,14 +40,28 @@ fun HomeScreen(
     onNewItemClick: (News) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ){
-    val uiState by viewModel.uiState.collectAsState()
+    //val uiState by viewModel.uiState.collectAsState()
+    val uiState  = viewModel.state
     var searchedText by remember {
         mutableStateOf("")
     }
 
-    LaunchedEffect(Unit){
-        viewModel.onEvent(HomeEvent.FetchNews)
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collectLatest {
+            when(it){
+                is HomeEffect.ShowToast -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
+
+    /*LaunchedEffect(Unit){
+        viewModel.handleEvent(HomeEvent.FetchNews)
+    }*/
     Scaffold(
         topBar = {
             DefaultTopAppBar(
@@ -57,7 +76,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            if(uiState.isLoading){
+            if(viewModel.state.isLoading){
                 CustomLoader()
             }
             Column(
@@ -73,9 +92,9 @@ fun HomeScreen(
                     onValueChange = {
                         searchedText = it
                         if(it.isNotEmpty()){
-                            viewModel.onEvent(HomeEvent.Search(it))
+                            viewModel.setEvent(HomeEvent.Search(it))
                         }else{
-                            viewModel.onEvent(HomeEvent.ResetList)
+                            viewModel.setEvent(HomeEvent.ResetList)
                         }
                     },
                     placeHolder = "Buscar",

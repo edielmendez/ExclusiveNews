@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.ediel.exclusivenews.data.remote.common.NetworkResult
 import com.mx.ediel.exclusivenews.data.remote.news.NewsRepository
+import com.mx.ediel.exclusivenews.ui.common.viewmodel.MVIBaseViewModel
+import com.mx.ediel.exclusivenews.ui.screens.home.DataState.Companion.asSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,60 +32,89 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: NewsRepository
-): ViewModel() {
-    private val vmUiState =
+) : MVIBaseViewModel<HomeEvent, HomeUiState, HomeEffect>() {
+    /*private val vmUiState =
         MutableStateFlow(HomeUiState())
 
     val uiState = vmUiState.stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
         vmUiState.value
-    )
+    )*/
 
     private var job: Job? = null
 
     init {
-        resetPagination()
+        //resetPagination()
+        handleEvent(HomeEvent.FetchNews)
     }
 
-    private fun resetPagination(){
+    /*private fun resetPagination() {
         vmUiState.update {
             it.copy(page = 1)
         }
-    }
+    }*/
 
-    fun onEvent(event: HomeEvent){
-        when(event){
+    /*fun onEvent(event: HomeEvent) {
+        when (event) {
             is HomeEvent.FetchNews -> {
                 fetchNews()
             }
+
             is HomeEvent.Search -> {
                 searchWord(event.word)
             }
+
             is HomeEvent.ResetList -> {
                 resetNewsList()
             }
         }
-    }
+    }*/
 
     private fun fetchNews() {
         job?.cancel()
         setLoading()
         job = viewModelScope.launch(context = Dispatchers.IO) {
             repository.fetchNews("flutter")
-                .catch {  }
+                .catch { }
                 .collectLatest { result ->
                     when (result) {
                         is NetworkResult.Success -> {
-                            vmUiState.update { state ->
+                            //val newList = state.newsList.toMutableList()
+                            //newList.addAll(result.data)
+                            /*vmUiState.update { state ->
                                 val newList = state.newsList.toMutableList()
                                 newList.addAll(result.data)
-                                state.copy(isLoading = false, newsList = newList,  newsListBackup = newList)
+                                state.copy(
+                                    isLoading = false,
+                                    newsList = newList,
+                                    newsListBackup = newList
+                                )
+                            }*/
+                            setState {
+                                copy(
+                                    isLoading = false,
+                                    newsList = result.data,
+                                    newsListBackup = result.data
+                                )
                             }
                         }
+
                         is NetworkResult.Error -> {
-                            vmUiState.update { state ->
+                            /*vmUiState.update { state ->
                                 state.copy(isLoading = false, error = result.error)
+                            }*/
+                            setState {
+                                /*DataState.Success(
+                                    HomeUiState(
+                                        isLoading = false, error = result.error
+                                    )
+                                )*/
+                                //DataState.Loading
+                                copy(isLoading = false, error = result.error)
+                            }
+                            setEffect {
+                                HomeEffect.ShowToast(state.error)
                             }
                         }
                     }
@@ -93,7 +124,7 @@ class HomeViewModel @Inject constructor(
     }
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    private fun searchWord(word: String){
+    private fun searchWord(word: String) {
         /*val filteredList = uiState.value.newsList.filter { movie ->
             movie.title.contains(word, true) || movie.description.contains(word, true) || movie.author.contains(word, true)
         }
@@ -112,17 +143,26 @@ class HomeViewModel @Inject constructor(
                     Log.v("HomeViewModel", "Searching ... $it")
                     repository.fetchNews(it)
                 }
-                .catch {  }
+                .catch { }
                 .collectLatest { result ->
                     when (result) {
                         is NetworkResult.Success -> {
-                            vmUiState.update { state ->
+                            /*vmUiState.update { state ->
                                 state.copy(isLoading = false, newsList = result.data)
+                            }*/
+                            setState {
+                                copy(
+                                    isLoading = false, newsList = result.data
+                                )
                             }
                         }
+
                         is NetworkResult.Error -> {
-                            vmUiState.update { state ->
+                            /*vmUiState.update { state ->
                                 state.copy(isLoading = false, error = result.error)
+                            }*/
+                            setState {
+                                copy(isLoading = false, error = result.error)
                             }
                         }
                     }
@@ -130,16 +170,42 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun resetNewsList(){
+    private fun resetNewsList() {
         job?.cancel()
-        vmUiState.update {
+        /*vmUiState.update {
             it.copy(newsList = it.newsListBackup)
+        }*/
+        setState {
+            copy(newsList = uiState.value.newsListBackup)
         }
     }
 
-    private fun setLoading(isLoading: Boolean = true){
-        vmUiState.update {
+    private fun setLoading(isLoading: Boolean = true) {
+        /*vmUiState.update {
             it.copy(isLoading = isLoading)
+        }*/
+        setState {
+            copy(isLoading = isLoading)
+        }
+    }
+
+    override fun createInitialState() = HomeUiState()
+
+
+    override fun handleEvent(event: HomeEvent) {
+        Log.v("HomeViewModel", "$event")
+        when (event){
+            is HomeEvent.FetchNews -> {
+                fetchNews()
+            }
+
+            is HomeEvent.Search -> {
+                searchWord(event.word)
+            }
+
+            is HomeEvent.ResetList -> {
+                resetNewsList()
+            }
         }
     }
 

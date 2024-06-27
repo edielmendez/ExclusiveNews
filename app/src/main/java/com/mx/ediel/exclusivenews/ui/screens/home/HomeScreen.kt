@@ -29,6 +29,7 @@ import com.mx.ediel.exclusivenews.ui.common.components.EmptyResults
 import com.mx.ediel.exclusivenews.ui.common.components.NewsUiList
 import com.mx.ediel.exclusivenews.ui.model.News
 import com.mx.ediel.exclusivenews.ui.screens.home.components.CustomSearchView
+import com.mx.ediel.exclusivenews.ui.screens.home.components.DPHomeShimmerScreen
 import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -76,9 +77,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            if(viewModel.state.isLoading){
-                CustomLoader()
-            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -100,6 +99,10 @@ fun HomeScreen(
                     placeHolder = "Buscar",
 
                 )
+                if(viewModel.state.isLoading){
+                    //CustomLoader()
+                    DPHomeShimmerScreen()
+                }
                 if(uiState.newsList.isNotEmpty()){
                     NewsUiList(
                         news = uiState.newsList,

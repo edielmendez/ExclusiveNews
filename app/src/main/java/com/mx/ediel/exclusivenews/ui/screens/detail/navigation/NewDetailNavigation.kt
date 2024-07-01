@@ -1,6 +1,12 @@
 package com.mx.ediel.exclusivenews.ui.screens.detail.navigation
 
 import android.util.Log
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -33,6 +39,19 @@ fun NavGraphBuilder.detailScreen(
         arguments = listOf(
             navArgument(NEWS_TITLE) { type = NavType.StringType },
         ),
+        enterTransition = {
+            return@composable slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700))
+        },
+        exitTransition = {
+            return@composable slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Down, tween(700)
+            )
+        },
+        /*popEnterTransition = {
+            return@composable slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.End, tween(700)
+            )
+        }*/
     ) { backStackEntry ->
         val title = backStackEntry.arguments?.getString(NEWS_TITLE) ?: ""
         val author = backStackEntry.arguments?.getString(NEWS_AUTHOR) ?: ""

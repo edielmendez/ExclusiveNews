@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.mx.ediel.exclusivenews"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.mx.ediel.exclusivenews"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -49,7 +49,7 @@ android {
 }
 
 dependencies {
-    val nav_version = "2.5.3"
+    val nav_version = "2.7.4"
     val lifecycle_version = "2.5.1"
     val room_version = "2.5.0"
 

@@ -1,13 +1,20 @@
 package com.mx.ediel.exclusivenews.ui.screens.home
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +42,7 @@ import com.mx.ediel.exclusivenews.ui.theme.ExclusiveNewsTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     onFavoritesButtonClick: () -> Unit,
@@ -46,6 +54,7 @@ fun HomeScreen(
     var searchedText by remember {
         mutableStateOf("")
     }
+    val pullRefreshState = rememberPullRefreshState(uiState.isRefreshing, { viewModel.setEvent(HomeEvent.FetchNews) })
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -72,10 +81,10 @@ fun HomeScreen(
             )
         }
     ) {
-        Column(
-            modifier = Modifier
+        Box(
+            Modifier.padding(it)
                 .fillMaxSize()
-                .padding(it)
+                .pullRefresh(pullRefreshState)
         ) {
 
             Column(
@@ -116,6 +125,12 @@ fun HomeScreen(
                     )
                 }
             }
+
+            PullRefreshIndicator(
+                refreshing = uiState.isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 }

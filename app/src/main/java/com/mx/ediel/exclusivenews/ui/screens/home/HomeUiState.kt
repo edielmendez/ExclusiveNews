@@ -10,6 +10,7 @@ data class HomeUiState(
     val error: String = "",
     val newsList: List<News> = emptyList(),
     val newsListBackup: List<News> = emptyList(),
+    val isRefreshing: Boolean = false
     //val page: Int = 1
 ): UiState
 
